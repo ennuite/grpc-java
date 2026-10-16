@@ -1,0 +1,11 @@
+I'm unsure of the proper convention for naming tests: resolve_emptyResult_notAccepted vs resolve_addressResolutionError
+vs nullDnsName
+Even in the resolve tests, resolve_emptyResult_notAccepted seems to be method_scenario_outcome, while
+resolve_addressResolutionError seems to be method_scenario.
+
+For capturing the argument to onResult2(), some methods declare a local
+    ArgumentCaptor<ResolutionResult> ac = ArgumentCaptor.forClass(ResolutionResult.class);
+while others do it in the way I did.
+
+I'm unsure whether we should catch all exceptions or not. It seems like the retry mechanism in RetryingNameResolver
+requires 

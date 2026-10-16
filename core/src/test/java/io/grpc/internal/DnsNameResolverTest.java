@@ -546,6 +546,18 @@ public class DnsNameResolverTest {
         .isInstanceOf(IOException.class);
   }
 
+  @Test
+  public void resolve_invalidPort_reportsError() {
+    RetryingNameResolver resolver = newResolver("addr.fake:65537", 443);
+
+    resolver.start(mockListener);
+    assertThat(fakeExecutor.runDueTasks()).isEqualTo(1);
+
+    verify(mockListener).onResult2(resultCaptor.capture());
+    assertThat(resultCaptor.getValue().getAddressesOrError().getStatus().getCause())
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
   // Load balancer rejects the empty addresses.
   @Test
   public void resolve_emptyResult_notAccepted() throws Exception {
